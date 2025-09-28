@@ -1,208 +1,390 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Sign In / Sign Out</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MPack — Plugin files (download / copy)</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7f7f7;
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      text-align: center;
-    }
-    form {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-    }
-    input, select, button {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-    button {
-      cursor: pointer;
-      background: #0077ff;
-      color: white;
-      border: none;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: #005fcc;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background: #f0f0f0;
-    }
-    .status {
-      margin-bottom: 15px;
-      padding: 10px;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-    .status.out {
-      background: #ffe0e0;
-      color: #a00;
-    }
-    .status.in {
-      background: #e0ffe0;
-      color: #060;
-    }
-    .passcode {
-      margin-top: 10px;
-      padding: 8px;
-      background: #e8f0ff;
-      border: 1px solid #99c;
-      border-radius: 5px;
-      font-size: 14px;
-      display: none;
-    }
+    :root{--bg:#0f1724;--panel:#0b1220;--muted:#94a3b8;--accent:#ffd24a;--code-bg:#071022}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    body{background:linear-gradient(180deg,#031027 0%, #071427 100%);color:#e6eef6;padding:28px}
+    .wrap{max-width:980px;margin:0 auto}
+    header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+    header h1{font-size:20px;margin:0}
+    .meta{color:var(--muted);font-size:13px}
+    .grid{display:grid;grid-template-columns:1fr;gap:18px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .file-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .filename{font-weight:600}
+    .btns{display:flex;gap:8px}
+    button{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:var(--accent);cursor:pointer;font-weight:600}
+    button.copy{color:#7dd3fc}
+    pre{background:var(--code-bg);padding:14px;border-radius:10px;overflow:auto;white-space:pre-wrap;color:#dbeafe;border:1px solid rgba(255,255,255,0.03);font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:13px}
+    .hint{color:var(--muted);font-size:13px;margin-top:8px}
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+    .top-actions{display:flex;gap:8px;margin-left:auto}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Sign In / Sign Out</h1>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>MPack — single-file HTML package</h1>
+        <div class="meta">Contains: <strong>pom.xml</strong>, <strong>plugin.yml</strong>, <strong>config.yml</strong>, <strong>src/main/java/com/samziri/mpack/MPack.java</strong>, and a README. Use the buttons to copy or download each file.</div>
+      </div>
+      <div class="top-actions">
+        <button id="downloadAll">Download all as ZIP</button>
+      </div>
+    </header>
 
-    <div id="statusBox" class="status"></div>
+    <div class="grid">
 
-    <form id="signForm">
-      <input type="text" id="user" placeholder="Enter Your Name" required />
-      <input type="text" id="passcode" placeholder="Passcode (for sign in)" />
-      <select id="mode">
-        <option value="out">Sign Out</option>
-        <option value="in">Sign In</option>
-      </select>
-      <button type="submit">Submit</button>
-    </form>
+      <section class="card" id="pom">
+        <div class="file-head">
+          <div class="filename">pom.xml</div>
+          <div class="btns">
+            <button class="download" data-fn="pom.xml">Download</button>
+            <button class="copy copy-btn" data-fn="pom.xml">Copy</button>
+          </div>
+        </div>
+        <pre id="pom-code">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;com.samziri&lt;/groupId&gt;
+  &lt;artifactId&gt;mpack&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+  &lt;name&gt;MinecraftPackPlugin&lt;/name&gt;
+  &lt;description&gt;Homes/Warps/Kits/TPA/Spawn/Back + small economy&lt;/description&gt;
 
-    <div id="passcodeBox" class="passcode"></div>
+  &lt;properties&gt;
+    &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;
+    &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;spigot.version&gt;1.20.2-R0.1-SNAPSHOT&lt;/spigot.version&gt;
+  &lt;/properties&gt;
 
-    <table id="recordsTable">
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Passcode</th>
-          <th>Signed Out</th>
-          <th>Signed In</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.spigotmc&lt;/groupId&gt;
+      &lt;artifactId&gt;spigot-api&lt;/artifactId&gt;
+      &lt;version&gt;${spigot.version}&lt;/version&gt;
+      &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+        &lt;version&gt;3.10.1&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;source&gt;${maven.compiler.source}&lt;/source&gt;
+          &lt;target&gt;${maven.compiler.target}&lt;/target&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;
+        &lt;version&gt;3.4.1&lt;/version&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;&lt;goal&gt;shade&lt;/goal&gt;&lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;createDependencyReducedPom&gt;false&lt;/createDependencyReducedPom&gt;
+              &lt;transformers&gt;
+                &lt;transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"&gt;
+                  &lt;mainClass&gt;com.samziri.mpack.MPack&lt;/mainClass&gt;
+                &lt;/transformer&gt;
+              &lt;/transformers&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</pre>
+        <div class="hint">Maven POM (Java 17). Edit <code>&lt;spigot.version&gt;</code> to match your server API version.</div>
+      </section>
+
+      <section class="card" id="plugin-yml">
+        <div class="file-head">
+          <div class="filename">plugin.yml (src/main/resources/plugin.yml)</div>
+          <div class="btns">
+            <button class="download" data-fn="plugin.yml">Download</button>
+            <button class="copy copy-btn" data-fn="plugin.yml">Copy</button>
+          </div>
+        </div>
+        <pre id="plugin-code">name: MPack
+main: com.samziri.mpack.MPack
+version: 1.0.0
+api-version: 1.16
+author: SamZiri
+commands:
+  sethome:
+    description: Set a home (optional name)
+    usage: /sethome [name]
+    permission: mpack.sethome
+  home:
+    description: Teleport to your home
+    usage: /home [name]
+    permission: mpack.home
+  delhome:
+    description: Delete a named home
+    usage: /delhome &lt;name&gt;
+    permission: mpack.delhome
+  homes:
+    description: List your homes
+    permission: mpack.homes
+  warp:
+    description: Warp commands (admin & users)
+    usage: /warp &lt;set|tp|del|list&gt; [...]
+    permission: mpack.warp
+  setspawn:
+    description: Set server spawn
+    usage: /setspawn
+    permission: mpack.setspawn
+  spawn:
+    description: Teleport to spawn
+    usage: /spawn
+    permission: mpack.spawn
+  back:
+    description: Teleport to last death location
+    usage: /back
+    permission: mpack.back
+  kit:
+    description: Give a kit
+    usage: /kit &lt;name&gt; [player]
+    permission: mpack.kit
+  tpa:
+    description: Request teleport to a player
+    usage: /tpa &lt;player&gt;
+    permission: mpack.tpa
+  tpaccept:
+    description: Accept a teleport request
+    permission: mpack.tpaccept
+  tpdeny:
+    description: Deny a teleport request
+    permission: mpack.tpdeny
+  bal:
+    description: Check balance
+    usage: /bal [player]
+    permission: mpack.bal
+  pay:
+    description: Pay another player
+    usage: /pay &lt;player&gt; &lt;amount&gt;
+    permission: mpack.pay
+permissions:
+  mpack.*:
+    description: Full access to MPack features
+    default: op
+  mpack.sethome: { default: true }
+  mpack.home: { default: true }
+  mpack.delhome: { default: true }
+  mpack.homes: { default: true }
+  mpack.warp: { default: op }
+  mpack.setspawn: { default: op }
+  mpack.spawn: { default: true }
+  mpack.back: { default: true }
+  mpack.kit: { default: true }
+  mpack.tpa: { default: true }
+  mpack.tpaccept: { default: true }
+  mpack.tpdeny: { default: true }
+  mpack.bal: { default: true }
+  mpack.pay: { default: true }</pre>
+        <div class="hint">Place this file at <code>src/main/resources/plugin.yml</code> inside your Maven project.</div>
+      </section>
+
+      <section class="card" id="config">
+        <div class="file-head">
+          <div class="filename">config.yml (resources)</div>
+          <div class="btns">
+            <button class="download" data-fn="config.yml">Download</button>
+            <button class="copy copy-btn" data-fn="config.yml">Copy</button>
+          </div>
+        </div>
+        <pre id="config-code"># MPack config
+
+tpa:
+  timeout-seconds: 30
+
+kits:
+  starter:
+    description: Starter kit for new players
+    delay-seconds: 86400 # 24h cooldown in seconds (-1 for none)
+    items:
+      - "STONE:16"
+      - "APPLE:8"
+      - "IRON_SWORD:1"
+  builder:
+    description: Basic building kit
+    delay-seconds: 3600
+    items:
+      - "OAK_PLANKS:64"
+      - "OAK_PLANKS:64"
+
+messages:
+  prefix: "&6[MPack]&r "
+  no-permission: "&cYou don't have permission to do that."
+  unknown-player: "&cPlayer not found or not online."
+  home-set: "&aHome '%name%' set!"
+  home-teleport: "&aTeleporting to home '%name%'."
+  no-home: "&cHome '%name%' does not exist."
+  homes-list: "&aYour homes: %list%"
+  warp-set: "&aWarp '%name%' set."
+  warp-del: "&aWarp '%name%' deleted."
+  warp-notfound: "&cWarp '%name%' not found."
+  kit-given: "&aGiven kit '%name%'."
+  cooldown: "&cYou must wait %time% before using that again."
+  tpa-request: "&aTeleport request sent to %target%."
+  tpa-received: "&aYou received a teleport request from %from%. Type /tpaccept or /tpdeny."
+  tpa-accepted: "&aTeleport request accepted. Teleporting..."
+  tpa-denied: "&cTeleport request denied."</pre>
+        <div class="hint">Edit kit items and messages to taste. Item format is &lt;MATERIAL&gt;:&lt;amount&gt;.</div>
+      </section>
+
+      <section class="card" id="main-java">
+        <div class="file-head">
+          <div class="filename">MPack.java (src/main/java/com/samziri/mpack/MPack.java)</div>
+          <div class="btns">
+            <button class="download" data-fn="MPack.java">Download</button>
+            <button class="copy copy-btn" data-fn="MPack.java">Copy</button>
+          </div>
+        </div>
+        <pre id="java-code">package com.samziri.mpack;
+
+import org.bukkit.plugin.java.JavaPlugin;
+import java.util.logging.Level;
+
+public class MPack extends JavaPlugin {
+
+    private static MPack instance;
+
+    @Override
+    public void onEnable() {
+        instance = this;
+        saveDefaultConfig();
+        getLogger().log(Level.INFO, "MPack enabled");
+
+        // NOTE: This HTML bundle includes only a minimal main class.
+        // Full command & manager classes can be added later.
+    }
+
+    @Override
+    public void onDisable() {
+        getLogger().log(Level.INFO, "MPack disabled");
+    }
+
+    public static MPack get() { return instance; }
+}
+</pre>
+        <div class="hint">Minimal Java plugin main class — add your command executors and feature classes in <code>com.samziri.mpack</code>.</div>
+      </section>
+
+      <section class="card" id="readme">
+        <div class="file-head">
+          <div class="filename">README — Build &amp; Install</div>
+          <div class="btns">
+            <button class="download" data-fn="README.txt">Download</button>
+            <button class="copy copy-btn" data-fn="README.txt">Copy</button>
+          </div>
+        </div>
+        <pre id="readme-code">MPack — Build & Install
+
+Files included:
+ - pom.xml
+ - src/main/resources/plugin.yml
+ - src/main/resources/config.yml
+ - src/main/java/com/samziri/mpack/MPack.java
+
+Build steps (Maven):
+ 1. Put the project in a folder with the above structure.
+ 2. Run: mvn clean package
+ 3. The shaded JAR will be in target/mpack-1.0.0.jar
+ 4. Drop the JAR into your server's plugins/ folder and restart or reload.
+
+Notes:
+ - Edit the POM <spigot.version> to match your server's API (1.16.5, 1.20.2, etc).
+ - Add the rest of the Java classes (commands/managers) to implement features.
+ - plugin.yml already declares many commands; implement their executors in code.
+</pre>
+        <div class="hint">Want me to include the full Java command classes next? Say "add Java sources" and I'll add them into this HTML pack.</div>
+      </section>
+
+    </div>
+
+    <footer>
+      Tip: Use the copy buttons to paste files directly into your IDE. If you want the full plugin Java sources added here (homes/warps/kits/tpa/economy), tell me and I'll expand the HTML package.
+    </footer>
   </div>
 
   <script>
-    const form = document.getElementById("signForm");
-    const tableBody = document.querySelector("#recordsTable tbody");
-    const statusBox = document.getElementById("statusBox");
-    const modeSelect = document.getElementById("mode");
-    const passcodeBox = document.getElementById("passcodeBox");
+    // Files map — extracted from the DOM pre blocks
+    const files = {
+      'pom.xml': document.getElementById('pom-code').innerText,
+      'plugin.yml': document.getElementById('plugin-code').innerText,
+      'config.yml': document.getElementById('config-code').innerText,
+      'src/main/java/com/samziri/mpack/MPack.java': document.getElementById('java-code').innerText,
+      'README.txt': document.getElementById('readme-code').innerText
+    };
 
-    let records = JSON.parse(localStorage.getItem("signRecords") || "[]");
-    let passcodeCounter = parseInt(localStorage.getItem("passcodeCounter") || "1");
-
-    function render() {
-      tableBody.innerHTML = "";
-      records.forEach(r => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${r.user}</td>
-          <td>${r.passcode}</td>
-          <td>${r.signedOut ? new Date(r.signedOut).toLocaleString() : "-"}</td>
-          <td>${r.signedIn ? new Date(r.signedIn).toLocaleString() : "<span class='out'>Still Out</span>"}</td>
-        `;
-        tableBody.appendChild(tr);
-      });
-
-      // check if someone currently has the camera
-      const active = records.find(r => !r.signedIn);
-      if (active) {
-        statusBox.textContent = `📷 Camera is currently with ${active.user}`;
-        statusBox.className = "status out";
-        // disable Sign Out option
-        modeSelect.value = "in";
-        modeSelect.querySelector("option[value='out']").disabled = true;
-      } else {
-        statusBox.textContent = "✅ Camera is available";
-        statusBox.className = "status in";
-        // enable Sign Out option
-        modeSelect.querySelector("option[value='out']").disabled = false;
-      }
+    function downloadFile(filename, content) {
+      const blob = new Blob([content], {type: 'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
     }
 
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-      const user = document.getElementById("user").value.trim();
-      const mode = document.getElementById("mode").value;
-      const enteredPasscode = document.getElementById("passcode").value.trim();
-
-      if (!user) return alert("Please enter your name.");
-
-      if (mode === "out") {
-        // only allow if no one has it
-        const active = records.find(r => !r.signedIn);
-        if (active) {
-          alert("Camera is already signed out by " + active.user);
-          return;
-        }
-        // generate passcode: Name + counter
-        const passcode = user + passcodeCounter;
-        passcodeCounter++;
-        localStorage.setItem("passcodeCounter", passcodeCounter);
-
-        records.unshift({
-          user,
-          passcode,
-          signedOut: new Date().toISOString(),
-          signedIn: null
-        });
-
-        passcodeBox.textContent = `🔑 Your passcode is: ${passcode}. You’ll need this to sign the camera back in.`;
-        passcodeBox.style.display = "block";
-      } else {
-        // sign in requires passcode match
-        const record = records.find(r => 
-          r.user.toLowerCase() === user.toLowerCase() && !r.signedIn
-        );
-        if (!record) {
-          alert("No active sign-out found for " + user);
-          return;
-        }
-        if (enteredPasscode !== record.passcode) {
-          alert("Incorrect passcode. Please enter the correct one.");
-          return;
-        }
-        record.signedIn = new Date().toISOString();
-        passcodeBox.style.display = "none";
-      }
-
-      localStorage.setItem("signRecords", JSON.stringify(records));
-      render();
-      form.reset();
+    document.querySelectorAll('.download').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const fn = btn.getAttribute('data-fn');
+        const key = fn === 'MPack.java' ? 'src/main/java/com/samziri/mpack/MPack.java' : fn;
+        const content = files[key] || '';
+        downloadFile(fn, content);
+      });
     });
 
-    render();
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async e => {
+        const fn = btn.getAttribute('data-fn');
+        const key = fn === 'MPack.java' ? 'src/main/java/com/samziri/mpack/MPack.java' : fn;
+        const content = files[key] || '';
+        try {
+          await navigator.clipboard.writeText(content);
+          btn.textContent = 'Copied!';
+          setTimeout(()=> btn.textContent = 'Copy', 1200);
+        } catch (err) {
+          alert('Copy failed. You can still download the file.');
+        }
+      });
+    });
+
+    // Download all as zip (simple approach using JSZip if available). Fallback: create a single combined file.
+    document.getElementById('downloadAll').addEventListener('click', async ()=>{
+      // Try JSZip if present
+      if (window.JSZip) {
+        const zip = new JSZip();
+        for (const k in files) zip.file(k, files[k]);
+        const content = await zip.generateAsync({type:'blob'});
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'mpack-files.zip'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      } else {
+        // Fallback: download a single combined file
+        let combined = '';
+        for (const k in files) {
+          combined += '--- ' + k + '\n' + files[k] + '\n\n';
+        }
+        downloadFile('mpack-all-files.txt', combined);
+      }
+    });
   </script>
 </body>
 </html>
